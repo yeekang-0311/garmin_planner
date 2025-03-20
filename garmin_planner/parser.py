@@ -66,6 +66,14 @@ def parse_stepdetail(string):
                     })
                 continue
 
+            ## Lap button
+            if ("lap" in detail):
+                stepDetails.update({
+                        'endCondition': ConditionType.LAP_BUTTON, 
+                        'endConditionValue': 1
+                    })
+                continue
+
             # Target
             if ("@" in detail):
                 target, value = parse_bracket(detail)
