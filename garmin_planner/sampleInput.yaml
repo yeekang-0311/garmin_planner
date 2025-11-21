@@ -40,7 +40,7 @@ workouts:
   ga_6k_bike:
     - type: cycling
     - warmup: 1000m @H(z2)
-    - run: 4000m @P($GA)
+    - run: 4000m @W(z5)
     - cooldown: 1000m @H(z2)
   ga_6k:
     - type: running

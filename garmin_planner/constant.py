@@ -20,7 +20,7 @@ class SportType(Enum):
     }
 
     SWIMMING = {
-      "sportTypeId": 3,
+      "sportTypeId": 4,
       "sportTypeKey": "swimming",
       "displayOrder": 3
     }
@@ -101,7 +101,50 @@ class ConditionType(Enum):
         return self.value
 
 
+class STROKE_TYPE(Enum):
+    FREESTYLE = {
+        "strokeTypeId": 6,
+        "strokeTypeKey": "free",
+        "displayOrder": 6
+    }
+    BACKSTROKE = {
+        "strokeTypeId": 2,
+        "strokeTypeKey": "backstroke",
+        "displayOrder": 2
+    }
+    BREASTSTROKE = {
+        "strokeTypeId": 3,
+        "strokeTypeKey": "breaststroke",
+        "displayOrder": 3
+    }
 
+    def to_dict(self):
+        return self.value
+    
+class SWIM_EQUIPMENT(Enum):
+    FINS = {
+        "swimEquipmentId": 1,
+        "swimEquipmentKey": "fins",
+        "displayOrder": 1
+    }
+    KICKBOARD = {
+        "swimEquipmentId": 2,
+        "swimEquipmentKey": "kickboard",
+        "displayOrder": 2
+    }
+    PULL_BUOY = {
+        "swimEquipmentId": 4,
+        "swimEquipmentKey": "pull_buoy",
+        "displayOrder": 4
+    }
+    SNORKEL = {
+        "swimEquipmentId": 5,
+        "swimEquipmentKey": "snorkel",
+        "displayOrder": 5
+    }
+
+    def to_dict(self):
+        return self.value
 
 class TargetType(Enum):
     NO_TARGET = {
@@ -115,7 +158,7 @@ class TargetType(Enum):
         "workoutTargetTypeKey": "pace.zone",
         "displayOrder": 6
     }
-    CADENZE = {
+    CADENCE = {
         "workoutTargetTypeId": 3,
         "workoutTargetTypeKey": "cadence",
         "displayOrder": 3

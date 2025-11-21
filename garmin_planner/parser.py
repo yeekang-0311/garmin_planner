@@ -101,6 +101,16 @@ def parse_stepdetail(string):
                         'zoneNumber': rateZone
                     })
                     continue
+                if (target.upper() == "@W"):
+                    value = value.lower().replace("z", "")
+                    powerZone = int(value)
+                    stepDetails.update({
+                        'targetType': TargetType.POWER_ZONE,
+                        'zoneNumber': powerZone
+                    })
+                    continue
+
+   
 
         except Exception as e:
             logger.error(e)
