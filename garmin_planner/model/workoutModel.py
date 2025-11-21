@@ -17,6 +17,9 @@ class WorkoutStep:
     zoneNumber: Optional[int] = None # This needed when target = zone based
     targetValueUnit: Optional[str] = None
     stepAudioNote: Optional[str] = None
+    strokeType: Optional[str] = None
+    equipmentType: Optional[str] = None
+    drillType: Optional[str] = None
 
 @dataclass
 class RepeatStep:

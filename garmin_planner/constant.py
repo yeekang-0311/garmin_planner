@@ -101,7 +101,7 @@ class ConditionType(Enum):
         return self.value
 
 
-class STROKE_TYPE(Enum):
+class StrokeType(Enum):
     FREESTYLE = {
         "strokeTypeId": 6,
         "strokeTypeKey": "free",
@@ -120,28 +120,50 @@ class STROKE_TYPE(Enum):
 
     def to_dict(self):
         return self.value
-    
-class SWIM_EQUIPMENT(Enum):
+
+class DrillType(Enum):
+    DRILL = {
+        "drillTypeId": 3,
+        "drillTypeKey": "drill",
+        "displayOrder": 3
+    }
+    PULL = {
+        "drillTypeId": 2,
+        "drillTypeKey": "pull",
+        "displayOrder": 2
+    }
+    KICK = {
+        "drillTypeId": 1,
+        "drillTypeKey": "kick",
+        "displayOrder": 1
+    }
+
+
+
+    def to_dict(self):
+        return self.value
+class EquipmentType(Enum):
     FINS = {
-        "swimEquipmentId": 1,
-        "swimEquipmentKey": "fins",
+        "equipmentTypeId": 1,
+        "equipmentTypeKey": "fins",
         "displayOrder": 1
     }
     KICKBOARD = {
-        "swimEquipmentId": 2,
-        "swimEquipmentKey": "kickboard",
+        "equipmentTypeId": 2,
+        "equipmentTypeKey": "kickboard",
         "displayOrder": 2
     }
     PULL_BUOY = {
-        "swimEquipmentId": 4,
-        "swimEquipmentKey": "pull_buoy",
+        "equipmentTypeId": 4,
+        "equipmentTypeKey": "pull_buoy",
         "displayOrder": 4
     }
     SNORKEL = {
-        "swimEquipmentId": 5,
-        "swimEquipmentKey": "snorkel",
+        "equipmentTypeId": 5,
+        "equipmentTypeKey": "snorkel",
         "displayOrder": 5
     }
+
 
     def to_dict(self):
         return self.value
@@ -152,12 +174,13 @@ class TargetType(Enum):
         "workoutTargetTypeKey": "no.target",
         "displayOrder": 1
     }
-    # This need targetValueOne, Two
-    PACE = {
-        "workoutTargetTypeId": 6,
-        "workoutTargetTypeKey": "pace.zone",
-        "displayOrder": 6
+    POWER_ZONE = {
+        "workoutTargetTypeId": 2,
+        "workoutTargetTypeKey": "power.zone",
+        "displayOrder": 2
     }
+    # This need targetValueOne, Two
+
     CADENCE = {
         "workoutTargetTypeId": 3,
         "workoutTargetTypeKey": "cadence",
@@ -168,11 +191,17 @@ class TargetType(Enum):
         "workoutTargetTypeKey": "heart.rate.zone",
         "displayOrder": 4
     }
-    POWER_ZONE = {
-        "workoutTargetTypeId": 2,
-        "workoutTargetTypeKey": "power.zone",
-        "displayOrder": 2
+    SPEED = {
+            "displayOrder": 5,
+            "workoutTargetTypeId": 5,
+            "workoutTargetTypeKey": "speed.zone"
+        }
+    PACE = {
+        "workoutTargetTypeId": 6,
+        "workoutTargetTypeKey": "pace.zone",
+        "displayOrder": 6
     }
+
     def to_dict(self):
         return self.value
 

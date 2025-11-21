@@ -27,27 +27,22 @@ def serialize(obj):
         return obj.to_dict()
     return obj.__dict__
 
-def createWorkoutList(steps: list, stepCount: list):
+def createWorkoutList(steps: list, stepCount: list, sport_type):
     workoutSteps = []
-    for _, step in enumerate(steps):
-        workoutStep = createWorkoutStep(step, stepCount)
+    for  step in steps:
+        workoutStep = createWorkoutStep(step, stepCount,sport_type)
         if workoutStep:
             workoutSteps.append(workoutStep)
     return workoutSteps
 
-def createWorkoutStep(step: dict, stepCount: list):
+def createWorkoutStep(step: dict, stepCount: list, sport_type):
     stepType = None
     # esempio step: [{'warmup': '15min @H(z2)'}, {'repeat(8)': [{'run': '30sec @P(3:30-4:00)'}, {'recovery': '1200m'}]}, {'cooldown': '15min @H(z2)'}]
-
     for stepName in step:
         stepDetail = step[stepName]
         parsedStep, numIteration = parse_bracket(stepName)
         match parsedStep:
-            case "run":
-                stepType = StepType.INTERVAL
-            case "bike":
-                stepType = StepType.INTERVAL
-            case "swim":
+            case "run"|"ride"|"swim":
                 stepType = StepType.INTERVAL
             case "warmup":
                 stepType = StepType.WARMUP
@@ -59,7 +54,7 @@ def createWorkoutStep(step: dict, stepCount: list):
                 stepType = StepType.REPEAT
                 stepCount[0] += 1
                 order = stepCount[0]
-                workoutSteps = createWorkoutList(stepDetail, stepCount)
+                workoutSteps = createWorkoutList(stepDetail, stepCount, sport_type)
                 return RepeatStep(
                     stepId=order, stepOrder=order, 
                     workoutSteps=workoutSteps,
@@ -68,7 +63,8 @@ def createWorkoutStep(step: dict, stepCount: list):
                 logger.error("default in workout step")
                 return None
 
-        parsedStepDetailDict = parse_stepdetail(stepDetail)
+        parsedStepDetailDict = parse_stepdetail(stepDetail, sport_type)
+
         stepCount[0] += 1
         order = stepCount[0]
     return WorkoutStep(stepId=order, stepOrder=order, stepType=stepType, **parsedStepDetailDict)
@@ -76,18 +72,17 @@ def createWorkoutStep(step: dict, stepCount: list):
 
 def createWorkoutJson(workoutName: str, steps: list):
     stepCount = [0] #TODO: is alwais the same and is used for repeat workout
-    _dict_sport = dict(steps[0])["type"]
-    if _dict_sport == "running":
+    _sport_mode = dict(steps[0])["type"]
+    if _sport_mode == "running":
         sport_type = SportType.RUNNING
-    elif _dict_sport == "cycling":
+    elif _sport_mode == "cycling":
         sport_type = SportType.CYCLING
-    elif _dict_sport == "swimming":
+    elif _sport_mode == "swimming":
         sport_type = SportType.SWIMMING
     # distance_unit = DistanceUnit.KILOMETER
-    steps.pop(0)
 
 
-    workoutSteps = createWorkoutList(steps, stepCount)
+    workoutSteps = createWorkoutList(steps, stepCount, sport_type)
 
     # Create other steps and segments similarly, then create the workout model
     workout_segment = WorkoutSegment(
