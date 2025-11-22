@@ -1,4 +1,4 @@
-from garmin_planner.constant import SportType, DistanceUnit, StepType, ConditionType, TargetType
+from garmin_planner.constant import SportType, DistanceUnit, StepType, ConditionType, SwimUnit, TargetType
 from dataclasses import dataclass
 from typing import Optional, List, Union
 
@@ -17,6 +17,17 @@ class WorkoutStep:
     zoneNumber: Optional[int] = None # This needed when target = zone based
     targetValueUnit: Optional[str] = None
     stepAudioNote: Optional[str] = None
+    strokeType: Optional[str] = None
+    equipmentType: Optional[str] = None
+    drillType: Optional[str] = None
+    secondaryTargetType: Optional[TargetType] = None
+    secondaryTargetValueOne: Optional[float] = None
+    preferredEndConditionUnit: Optional[SwimUnit] = None
+    secondaryTargetValueTwo: Optional[float] = None
+    secondaryTargetValueUnit: Optional[str] = None
+    secondaryZoneNumber: Optional[int] = None
+
+    
 
 @dataclass
 class RepeatStep:

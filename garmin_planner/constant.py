@@ -1,5 +1,5 @@
 from enum import Enum
-
+# docu for sports and activity IDshttps://developer.garmin.com/connect-iq/api-docs/Toybox/Activity.html#Sport-module
 # A constant used to convert pace to certain value recognized by Garmin Connect
 PACE_CONST = 16.66666
 
@@ -12,14 +12,34 @@ class SportType(Enum):
       "sportTypeKey": "running",
       "displayOrder": 1
     }
+    
+    CYCLING = {
+      "sportTypeId": 2,
+      "sportTypeKey": "cycling",
+      "displayOrder": 2
+    }
 
+    SWIMMING = {
+      "sportTypeId": 4,
+      "sportTypeKey": "swimming",
+      "displayOrder": 3
+    }
     def to_dict(self):
         return self.value
 
+class SwimUnit(Enum):
+    METERS={
+        "unitKey": "meter"
+    }
+    def to_dict(self):
+        return self.value
 
 class DistanceUnit(Enum):
     KILOMETER = {
       "unitKey": "kilometer"
+    }
+    METERS = {
+      "unitKey": "meter"
     }
     MILE = {
       "unitKey": "mile"
@@ -54,9 +74,10 @@ class StepType(Enum):
         "stepTypeKey": "repeat",
         "displayOrder": 6
     }
-
     def to_dict(self):
         return self.value
+
+
 
 
 class ConditionType(Enum):
@@ -78,16 +99,83 @@ class ConditionType(Enum):
         "displayOrder": 3,
         "displayable": True
     }
+
     ITERATION_ENDS = {
         "conditionTypeId": 7,
         "conditionTypeKey": "iterations",
         "displayOrder": 7,
         "displayable": False
     }
+    def to_dict(self):
+        return self.value
+
+
+class StrokeType(Enum):
+    FREESTYLE = {
+        "strokeTypeId": 6,
+        "strokeTypeKey": "free",
+        "displayOrder": 6
+    }
+    BACKSTROKE = {
+        "strokeTypeId": 2,
+        "strokeTypeKey": "backstroke",
+        "displayOrder": 2
+    }
+    BREASTSTROKE = {
+        "strokeTypeId": 3,
+        "strokeTypeKey": "breaststroke",
+        "displayOrder": 3
+    }
 
     def to_dict(self):
         return self.value
 
+class DrillType(Enum):
+    DRILL = {
+        "drillTypeId": 3,
+        "drillTypeKey": "drill",
+        "displayOrder": 3
+    }
+    PULL = {
+        "drillTypeId": 2,
+        "drillTypeKey": "pull",
+        "displayOrder": 2
+    }
+    KICK = {
+        "drillTypeId": 1,
+        "drillTypeKey": "kick",
+        "displayOrder": 1
+    }
+
+
+
+    def to_dict(self):
+        return self.value
+class EquipmentType(Enum):
+    FINS = {
+        "equipmentTypeId": 1,
+        "equipmentTypeKey": "fins",
+        "displayOrder": 1
+    }
+    KICKBOARD = {
+        "equipmentTypeId": 2,
+        "equipmentTypeKey": "kickboard",
+        "displayOrder": 2
+    }
+    PULL_BUOY = {
+        "equipmentTypeId": 4,
+        "equipmentTypeKey": "pull_buoy",
+        "displayOrder": 4
+    }
+    SNORKEL = {
+        "equipmentTypeId": 5,
+        "equipmentTypeKey": "snorkel",
+        "displayOrder": 5
+    }
+
+
+    def to_dict(self):
+        return self.value
 
 class TargetType(Enum):
     NO_TARGET = {
@@ -95,17 +183,34 @@ class TargetType(Enum):
         "workoutTargetTypeKey": "no.target",
         "displayOrder": 1
     }
+    POWER_ZONE = {
+        "workoutTargetTypeId": 2,
+        "workoutTargetTypeKey": "power.zone",
+        "displayOrder": 2
+    }
     # This need targetValueOne, Two
-    PACE = {
-        "workoutTargetTypeId": 6,
-        "workoutTargetTypeKey": "pace.zone",
-        "displayOrder": 6
+
+    CADENCE = {
+        "workoutTargetTypeId": 3,
+        "workoutTargetTypeKey": "cadence",
+        "displayOrder": 3
     }
     HEART_RATE_ZONE = {
         "workoutTargetTypeId": 4,
         "workoutTargetTypeKey": "heart.rate.zone",
         "displayOrder": 4
     }
+    SPEED = {
+            "displayOrder": 5,
+            "workoutTargetTypeId": 5,
+            "workoutTargetTypeKey": "speed.zone"
+        }
+    PACE = {
+        "workoutTargetTypeId": 6,
+        "workoutTargetTypeKey": "pace.zone",
+        "displayOrder": 6
+    }
 
     def to_dict(self):
         return self.value
+

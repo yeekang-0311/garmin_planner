@@ -1,0 +1,90 @@
+#guidelines to create structured workout plans for triathlon training:
+# type of sport available: swimming, cycling, running
+# type of segments available: warmup, cooldown, swim, ride, run, recovery
+# distance can be specified in meters (m) or kilometers (km), example 200m, 1.5km
+# time can be specified in seconds (sec), minutes (min) or hours (hr), example 30sec, 15min, 1hr
+# use P() to specify pace. in min/km for running and cycling, min/100m for swimming, example P(4:30-4:45) for running, P(1:50) for swimming.
+# use W() to specify power zones for cycling and running, example W(z3)
+# use H() to specify heart rate zones, example H(z2)
+# use C() to specify cadence range for cycling and running, example C(85-95)
+# use EQUIP() to specify equipment for swimming, example EQUIP(fins), EQUIP(kickboard). just one equipment per segment
+# use EXECUTION() to specify execution type for swimming, example EXECUTION(drill), EXECUTION(pull), EXECUTION(kick). just one execution type per segment
+# use STYLE() to specify swimming style, example STYLE(free), STYLE(back), STYLE(breast). just one style per segment
+# use repeat(N): to repeat the following set of exercises N times, indent the repeated exercises
+
+# @P, @W, @H, @C, can't be more then two for each segment, example: @P(4:30-4:45) @W(z3). the first is the primary target, the second is the secondary target.
+
+settings:
+  deleteSameNameWorkout: true
+
+workouts:
+  # Sessione di Nuoto: Velocità
+  swim_veloce:
+    - type: swimming
+    - warmup: 200m @H(z2)
+    - repeat(6):
+      - swim: 50m @P(1:30-1:35) @STYLE(free)
+      - recovery: 15sec
+    - repeat(4):
+      - swim: 100m @P(1:40-1:45) @EXECUTION(pull)
+      - recovery: 30sec
+    - cooldown: 100m @H(z2)
+
+  # Sessione di Ciclismo: Intervalli di Forza
+  bike_intervalli_forza:
+    - type: cycling
+    - warmup: 15min @H(z2) @C(90-100)
+    - repeat(5):
+      - ride: 3min @W(z4) @C(60-70) # Bassa Cadenza, Alta Potenza
+      - recovery: 3min @H(z1) @C(85-95)
+    - cooldown: 10min @H(z2)
+
+  # Sessione di Corsa: Resistenza Lunga
+  run_lungo:
+    - type: running
+    - warmup: 10min @H(z2)
+    - run: 75min @P(5:00-5:30) @W(z3)
+    - run: 15min @H(z2) # Rilascio attivo
+    - cooldown: 5min @H(z2)
+
+  # Sessione di Transizione: Brick (Bici + Corsa)
+  brick_bici-corsa:
+    - type: cycling
+    - warmup: 10min @H(z2)
+    - ride: 60min @W(z3) @C(85-95)
+    - recovery: 5min # Transizione T2 (immaginaria)
+    - type: running
+    - run: 20min @P(4:45-5:00) @H(z4) # Corsa con ritmo gara
+    - cooldown: 10min @H(z2)
+
+  # Sessioni di base prese dall'esempio precedente (per completezza)
+  swim_tecnica:
+    - type: swimming
+    - warmup: 200m @H(z2)
+    - repeat(4):
+      - swim: 50m @EQUIP(fins) @EXECUTION(drill)
+      - recovery: 30sec
+    - swim: 400m @P(1:50) @EXECUTION(pull)
+    - recovery: 100m @H(z1)
+    - swim: 200m @STYLE(free) @P(1:40)
+    - cooldown: 100m @H(z2)
+
+  run_ritmo:
+    - type: running
+    - warmup: 15min @H(z2)
+    - repeat(5):
+      - run: 1000m @P(4:15-4:25) @W(z4)
+      - recovery: 300m @H(z1)
+    - cooldown: 15min @H(z2)
+    
+schedulePlan:
+  start_from: 2025-11-25 # Ho spostato l'inizio della settimana al lunedì
+  workouts:
+    # week 1
+    - swim_tecnica
+    - bike_intervalli_forza
+    - rest
+    - run_lungo
+    - swim_veloce
+    - brick_bici-corsa
+    - run_ritmo

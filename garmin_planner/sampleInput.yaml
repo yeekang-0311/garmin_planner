@@ -1,5 +1,3 @@
-email: "example@gmail.com"
-password: "password"
 
 settings:
   deleteSameNameWorkout: true
@@ -14,55 +12,56 @@ definitions:
 
 # define workouts here
 workouts:
-  interval_Vo2Max:
-    - warmup: 15min @H(z2)
-    - repeat(8):
-      - run: 30sec @P($VO2MaxP)
-      - recovery: 1200m
-    - cooldown: 15min @H(z2)
+  # interval_Vo2Max:
+  #   - type: running
+  #   - warmup: 15min @H(z2)
+  #   - repeat(8):
+  #     - run: 30sec @P($VO2MaxP)
+  #     - recovery: 1200m
+  #   - cooldown: 15min @H(z2)
   e_16k:
+    - type: cycling
     - warmup: 2000m @H(z2)
     - run: 12000m @P($GA)
     - cooldown: 2000m @H(z2)
-  e_14k:
-    - warmup: 2000m @H(z2)
-    - run: 10000m @P($GA)
-    - cooldown: 2000m @H(z2)
-  ga_10k:
-    - warmup: 1000m @H(z2)
-    - run: 8000m @P($GA)
-    - cooldown: 1000m @H(z2)
-  ga_8k:
-    - warmup: 2000m @H(z2)
-    - run: 4000m @P($GA)
-    - cooldown: 2000m @H(z2)
-  ga_5k:
-    - warmup: 1000m @H(z2)
-    - run: 3000m @P($GA)
-    - cooldown: 1000m @H(z2)
-  ga_6k:
-    - warmup: 1000m @H(z2)
-    - run: 4000m @P($GA)
-    - cooldown: 1000m @H(z2)
+  # e_14k:
+  #   - warmup: 2000m @H(z2)
+  #   - run: 10000m @P($GA)
+  #   - cooldown: 2000m @H(z2)
+  # ga_10k:
+  #   - warmup: 1000m @H(z2)
+  #   - run: 8000m @P($GA)
+  #   - cooldown: 1000m @H(z2)
+  # ga_8k:
+  #   - warmup: 2000m @H(z2)
+  #   - run: 4000m @P($GA)
+  #   - cooldown: 2000m @H(z2)
+  # ga_5k:
+  #   - warmup: 1000m @H(z2)
+  #   - run: 3000m @P($GA)
+  #   - cooldown: 1000m @H(z2)
+  # ga_6k:
+  #   - warmup: 1000m @H(z2)
+  #   - run: 4000m @P($GA)
+  #   - cooldown: 1000m @H(z2)
 
 # schedule workouts
 schedulePlan:
-  start_from: 2024-10-08
+  start_from: 2025-11-22
   workouts: 
     # week 1
-    - ga_10k
-    - ga_5k
-    - ga_6k
-    - rest
-    - e_14k
-    - rest 
-    - ga_10k
+    - e_16k
+    # - ga_6k
+    # - rest
+    # - e_14k
+    # - rest 
+    # - ga_10k
 
     # week 2
-    - ga_5k
-    - ga_8k
-    - rest
-    - ga_10k
-    - e_16k
-    - rest 
-    - ga_10k
+    # - ga_5k
+    # - ga_8k
+    # - rest
+    # - ga_10k
+    # - e_16k
+    # - rest 
+    # - ga_10k

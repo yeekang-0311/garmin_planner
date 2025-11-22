@@ -27,22 +27,25 @@ def serialize(obj):
         return obj.to_dict()
     return obj.__dict__
 
-def createWorkoutList(steps: list, stepCount: list):
+def createWorkoutList(steps: list, stepCount: list, sport_type):
     workoutSteps = []
-    for _, step in enumerate(steps):
-        workoutStep = createWorkoutStep(step, stepCount)
+    for  step in steps:
+        if step.get("type"):
+            continue
+        workoutStep = createWorkoutStep(step, stepCount,sport_type)
         if workoutStep:
             workoutSteps.append(workoutStep)
     return workoutSteps
 
-def createWorkoutStep(step: dict, stepCount: list):
+def createWorkoutStep(step: dict, stepCount: list, sport_type):
     stepType = None
+    # esempio step: [{'warmup': '15min @H(z2)'}, {'repeat(8)': [{'run': '30sec @P(3:30-4:00)'}, {'recovery': '1200m'}]}, {'cooldown': '15min @H(z2)'}]
     for stepName in step:
         stepDetail = step[stepName]
         parsedStep, numIteration = parse_bracket(stepName)
         match parsedStep:
-            case "run":
-                stepType = StepType.WARMUP
+            case "run"|"ride"|"swim":
+                stepType = StepType.INTERVAL
             case "warmup":
                 stepType = StepType.WARMUP
             case "cooldown":
@@ -53,27 +56,34 @@ def createWorkoutStep(step: dict, stepCount: list):
                 stepType = StepType.REPEAT
                 stepCount[0] += 1
                 order = stepCount[0]
-                workoutSteps = createWorkoutList(stepDetail, stepCount)
+                workoutSteps = createWorkoutList(stepDetail, stepCount, sport_type)
                 return RepeatStep(
                     stepId=order, stepOrder=order, 
                     workoutSteps=workoutSteps,
                     numberOfIterations=int(numIteration))
             case _:
-                logger.error("default in workout step")
+                logger.error("default in workout step", exc_info=True)
                 return None
+        parsedStepDetailDict = parse_stepdetail(stepDetail, sport_type)
 
-        parsedStepDetailDict = parse_stepdetail(stepDetail)
         stepCount[0] += 1
         order = stepCount[0]
     return WorkoutStep(stepId=order, stepOrder=order, stepType=stepType, **parsedStepDetailDict)
 
 
 def createWorkoutJson(workoutName: str, steps: list):
-    stepCount = [0]
-    sport_type = SportType.RUNNING
+    stepCount = [0] #TODO: is alwais the same and is used for repeat workout
+    _sport_mode = dict(steps[0])["type"]
+    if _sport_mode == "running":
+        sport_type = SportType.RUNNING
+    elif _sport_mode == "cycling":
+        sport_type = SportType.CYCLING
+    elif _sport_mode == "swimming":
+        sport_type = SportType.SWIMMING
     # distance_unit = DistanceUnit.KILOMETER
 
-    workoutSteps = createWorkoutList(steps, stepCount)
+
+    workoutSteps = createWorkoutList(steps, stepCount, sport_type)
 
     # Create other steps and segments similarly, then create the workout model
     workout_segment = WorkoutSegment(
@@ -81,7 +91,6 @@ def createWorkoutJson(workoutName: str, steps: list):
         sportType=sport_type,
         workoutSteps=workoutSteps
     )
-
     workout_model = WorkoutModel(
         workoutName=workoutName,
         sportType=sport_type,
@@ -93,7 +102,6 @@ def createWorkoutJson(workoutName: str, steps: list):
         estimatedDistanceInMeters=None,
         estimateType=None
     )
-
     return json.dumps(workout_model, default=serialize)
 
 def importWorkouts(workouts: dict, toDeletePrevious: bool, conn: Client):
@@ -108,7 +116,7 @@ def importWorkouts(workouts: dict, toDeletePrevious: bool, conn: Client):
             for toDelete in filtered:
                 conn.deleteWorkout(toDelete)
 
-        steps = workouts[name]
+        steps = workouts[name] # [{'warmup': '15min @H(z2)'}, {'repeat(8)': [{'run': '30sec @P(3:30-4:00)'}, {'recovery': '1200m'}]}, {'cooldown': '15min @H(z2)'}]
         jsonData = createWorkoutJson(name, steps)
         conn.importWorkout(jsonData)
 
