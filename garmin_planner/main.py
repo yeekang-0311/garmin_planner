@@ -30,6 +30,8 @@ def serialize(obj):
 def createWorkoutList(steps: list, stepCount: list, sport_type):
     workoutSteps = []
     for  step in steps:
+        if step.get("type"):
+            continue
         workoutStep = createWorkoutStep(step, stepCount,sport_type)
         if workoutStep:
             workoutSteps.append(workoutStep)
@@ -60,7 +62,7 @@ def createWorkoutStep(step: dict, stepCount: list, sport_type):
                     workoutSteps=workoutSteps,
                     numberOfIterations=int(numIteration))
             case _:
-                logger.error("default in workout step")
+                logger.error("default in workout step", exc_info=True)
                 return None
         parsedStepDetailDict = parse_stepdetail(stepDetail, sport_type)
 

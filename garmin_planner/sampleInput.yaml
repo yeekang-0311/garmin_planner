@@ -1,11 +1,5 @@
-# SPORT TIME AVAILABLE: [running, cycling, swimming]
-#TARGET AVAILABLE RUNNING/CYCLING: [@H, @P, @C, @W]
-# TARGET AVAILABLE SWIMMING: [@H, @P]
-# SWIM STYLE AVAILABLE: [freestyle, back, breast] to select use -> @STYLE(free) @style(back) @style(breast), free is default
-# SWIM EQUIP AVAILABLE: [fins, pull_buoy, snorkel,kickboard] to select use -> @EQUIP(fins) @EQUIP(pull_buoy) @EQUIP(snorkel) @EQUIP(kickboard)
-# SWIM EXECUTION AVAILABLE: [drill, pull, kick] to select use -> @EXECUTION(drill) @EXECUTION(pull) @EXECUTION(kick), normal swim is default
 settings:
-  deleteSameNameWorkout: true
+  deleteSameNameWorkout: false
 
 definitions:
   GA: 6:35-7:00
@@ -17,51 +11,49 @@ definitions:
 
 # define workouts here
 workouts:
-  interval_Vo2Max:
-    - type: running
-    - warmup: 15min @H(z2)
-    - repeat(8):
-      - run: 30sec @P($VO2MaxP)
-      - recovery: 1200m
-    - cooldown: 15min @H(z2)
+  # interval_Vo2Max:
+  #   - type: running
+  #   - warmup: 15min @H(z2)
+  #   - repeat(8):
+  #     - run: 30sec @P($VO2MaxP)
+  #     - recovery: 1200m
+  #   - cooldown: 15min @H(z2)
   ga_5k:
     - type: running
     - warmup: 1000m @H(z2)
-    - run: 3000m @W(z5)
-    - cooldown: 1000m @H(z2)
-  ga_6k_bike:
-    - type: cycling
-    - warmup: 1000m @H(z2)
-    - ride: 40000m @C(75-85)
-    - cooldown: 1000m @H(z2)
-  ga_6k:
-    - type: running
-    - warmup: 1000m @H(z2)
-    - run: 4000m @P($GA)
-    - cooldown: 1000m @H(z2)
-  ga_swim:
-    - type: swimming
-    - warmup: 200m @H(z2)
-    - swim: 400m @P(1:50) @EQUIP(fins) @EXECUTION(drill)
-    - recovery: 100m @H(z1)
-    - swim: 400m @P(1:40) @STYLE(back) @EXECUTION(pull)
-    - recovery: 100m @H(z1)
-    - swim: 400m @P(1:30) @EQUIP(PULL_BUOY) @EXECUTION(swim) @STYLE(breast)
-    - cooldown: 200m @H(z2)
+  # ga_6k_bike:
+  #   - type: cycling
+  #   - warmup: 1000m @H(z2)
+  #   - ride: 40000m @C(75-85)
+  #   - cooldown: 1000m @H(z2)
+  # ga_6k:
+  #   - type: running
+  #   - warmup: 1000m @H(z2)
+  #   - run: 4000m @P($GA)
+  #   - cooldown: 1000m @H(z2)
+  # ga_swim:
+  #   - type: swimming
+  #   - warmup: 200m @H(z2)
+  #   - swim: 400m @P(1:50) @EQUIP(fins) @EXECUTION(drill)
+  #   - recovery: 100m @H(z1)
+  #   - swim: 400m @P(1:40) @STYLE(back) @EXECUTION(pull)
+  #   - recovery: 100m @H(z1)
+  #   - swim: 400m @P(1:30) @EQUIP(PULL_BUOY) @STYLE(breast)
+  #   - cooldown: 200m @H(z2)
 
 # schedule workouts
 schedulePlan:
-  start_from: 2025-11-21
+  start_from: 2025-11-22
   workouts: 
     week 1
-    - interval_Vo2Max
+    - rest
     - rest
     - ga_5k
-    - rest
-    - ga_6k_bike
-    - rest
-    - rest 
-    - ga_swim
+    # - rest
+    # - ga_6k_bike
+    # - rest
+    # - rest 
+    # - ga_swim
 
     # week 2
     # - ga_5k
