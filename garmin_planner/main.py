@@ -112,7 +112,7 @@ def importWorkouts(workouts: dict, toDeletePrevious: bool, conn: Client):
         jsonData = createWorkoutJson(name, steps)
         conn.importWorkout(jsonData)
 
-def scheduleWorkouts(startfrom: datetime, workouts: dict, conn: Client):
+def scheduleWorkouts(startfrom: datetime, workouts: list, conn: Client):
     # Check valid date
     isValidDate = isinstance(startfrom, datetime.date)
     if (not isValidDate):
@@ -127,19 +127,28 @@ def scheduleWorkouts(startfrom: datetime, workouts: dict, conn: Client):
     toScheduleDate = startfrom
 
     # Schedule workouts
-    for toScheduleWorkout in workouts:
+    for toScheduleWorkouts in workouts:
         currentDate = toScheduleDate
         toScheduleDate += datetime.timedelta(days=1)
-        if (toScheduleWorkout not in workoutMap):
-            continue
 
-        workoutId = workoutMap[toScheduleWorkout]
-        dateJson = {"date": currentDate.strftime(DATE_FORMAT)}
-        success = conn.scheduleWorkout(workoutId, dateJson)
-        if (success):
-            logger.info(f"""Scheduled workout {toScheduleWorkout} on date {currentDate}""")
-        else:
-            logger.error("Something went wrong during schedulling")
+        if not isinstance(toScheduleWorkouts, str):
+            logger.error(f"Invalid workout entry: {toScheduleWorkouts}. Skipping.")
+            continue
+        # Split multiple workouts for a single day
+        dailyWorkouts = [workout.strip() for workout in toScheduleWorkouts.split(",")]
+
+        for workout in dailyWorkouts:
+            if workout not in workoutMap:
+                logger.warning(f"Workout '{workout}' not found on Garmin Connect. Skipping.")
+                continue
+
+            workoutId = workoutMap[workout]
+            dateJson = {"date": currentDate.strftime(DATE_FORMAT)}
+            success = conn.scheduleWorkout(workoutId, dateJson)
+            if (success):
+                logger.info(f"""Scheduled workout '{workout}' on date {currentDate}""")
+            else:
+                logger.error(f"""Failed to schedule workout '{workout}' on date {currentDate}""")
 
 def main():
     logger.info(f"""Running Garmin Planner {__version__}""")
